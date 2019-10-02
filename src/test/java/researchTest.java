@@ -27,12 +27,12 @@ public class researchTest {
 
     private static WebDriver driver;
 
-    @Attachment
+   // @Attachment
     public byte[] attachScreenshot() {
         return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }
 
-    @Before
+    //@Before
     public void before() {
 
         System.setProperty("webdriver.chrome.driver", "/work/chromedriver.exe");
@@ -42,7 +42,7 @@ public class researchTest {
         driver.get("http://192.168.4.222/login");
     }
 
-    @After
+    //@After
     public void after() {
 //System.out.print ("Login success");
         driver.quit();
@@ -52,7 +52,7 @@ public class researchTest {
 
 
     @Epic(value = "Проверка поиска по делам")
-    @Test
+    //@Test
     public void DevicesSearchTest() {
         int counter=0;
         WebElement loginField = driver.findElement(By.name("UID"));

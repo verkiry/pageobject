@@ -1,0 +1,13 @@
+checkLangeage.class
+tests\workspaceTest.class
+Sniffer.class
+getAmountOfData.class
+csvParser.class
+randomizer.class
+tests\casesTest.class
+checkFor.class
+pages\loginPage.class
+pages\workspacePage.class
+tests\utils.class
+pages\casesPage.class
+researchTest.class

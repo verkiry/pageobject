@@ -177,40 +177,56 @@ public class workspaceTest {
     @Feature("Поиск в Workspace по описанию")
     @Description("Поиск в Workspace по описанию")
     public void descriptionSearch() {
-        int errorCounter=0;
+        int errorCounter = 0;
         objLogin = new loginPage();
         objLogin.loginPage(driver);
         objLogin.loginToAutoQA("maxim", "12345");
         objCases = new casesPage(driver);
         objCases.goToWorkspace();
         objWorkspace = new workspacePage(driver);
-        String checkword=objWorkspace.searchRandomWord();
         objWorkspace.showHundredEvents();
-        List<WebElement> events=objWorkspace.getListOfEvents();
-        for (int i=0; i<events.size(); i++){
-            List<String> checkFields=new ArrayList<String>();
-            String description=objWorkspace.getDescriptionOfEvent(events.get(i));
-            checkFields.add(description);
-            String from=objWorkspace.getFromOfEvent(events.get(i));
-            checkFields.add(from);
-            String to=objWorkspace.getToOfEvent(events.get(i));
-            checkFields.add(to);
-            int counter=0;
-            for (int j=0; j<checkFields.size(); j++){
-                if (!checkFields.get(j).toLowerCase().contains(checkword)) {
-                    counter++;
-                }
-                if (counter==checkFields.size()) {
-                    System.out.println("123");
-                    errorCounter++;
-                    Allure.addAttachment("Неверный результат поиска", "Неверный результат поиска по слову "+checkword);
-                    attachScreenshot();
+        String checkword = objWorkspace.searchRandomWord();
+        int amountOfPages = objWorkspace.getAmountOfPages();
+        for (int n = 0; n < amountOfPages; n++) {
+            List<WebElement> events = objWorkspace.getListOfEvents();
+            System.out.println(events.size());
+            for (int i = 0; i < events.size(); i++) {
+                events.get(i).click();
+                List<String> checkFields = new ArrayList<String>();
+                String description = objWorkspace.getDescriptionOfEvent(events.get(i));
+                System.out.println(description);
+                if (!description.toLowerCase().contains(checkword.toLowerCase())) {
+                    checkFields.add(description);
+                    String from = objWorkspace.getFromOfEvent(events.get(i));
+                    if (from != null) {
+                        System.out.println(from);
+                        checkFields.add(from);
+                    }
+                    String to = objWorkspace.getToOfEvent(events.get(i));
+                    if (to != null) {
+                        System.out.println(to);
+                        checkFields.add(to);
+                    }
+                    int counter = 0;
+                    for (int j = 0; j < checkFields.size(); j++) {
+                        if (!checkFields.get(j).toLowerCase().contains(checkword.toLowerCase())) {
+                            counter++;
+                        }
+                    }
+                    if (counter == checkFields.size()) {
+                        System.out.println("Error");
+                        errorCounter++;
+                        Allure.addAttachment("Неверный результат поиска", "Неверный результат поиска по слову " + checkword);
+                        attachScreenshot();
+                    }
                 }
             }
+            objWorkspace.nextPage();
         }
         Assert.assertEquals("Обнаружены ошибки", 0, errorCounter);
     }
-    @Test //добавить проверку всех страниц, когда данных будет много
+
+    @Test
     @Epic("KE")
     @Feature("Проверка функционала КЕ")
     @Description("Проверка функционала КЕ")
